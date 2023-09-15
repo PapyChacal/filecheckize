@@ -5,3 +5,5 @@ parallel = True
 source =
     filecheckize/
     tests/
+omit =
+    filecheckize/filecheckize
