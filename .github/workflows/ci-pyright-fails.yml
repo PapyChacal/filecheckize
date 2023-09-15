@@ -1,0 +1,43 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Pyright
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    env:
+      PYRIGHT_VERSION: 1.0
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Upgrade pip
+        run: |
+          pip install --upgrade pip
+      - name: Install the package locally
+        run: pip install -e ".[extras]"
+      - name: retrieve pyright version
+        run: | # get pyright version from requirements optional file:
+          VER=$(sed -n 's/^.*pyright==\s*\(\S*\).*$/\1/p' requirements-optional.txt)
+          echo "PYRIGHT_VERSION=$VER" >> $GITHUB_ENV
+      - name: Pyright
+        uses: jakebailey/pyright-action@v1
+        with:
+          version: ${{env.PYRIGHT_VERSION}}

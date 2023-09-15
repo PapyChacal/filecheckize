@@ -1,0 +1,10 @@
+black[jupyter]
+toml<0.11
+coverage<8.0.0
+filecheck<0.0.24
+lit<17.0.0
+ruff==0.0.289
+isort==5.12.0
+# pyright version has to be fixed with `==`. The CI parses this file
+# and installs the according version for typechecking.
+pyright==1.1.326
