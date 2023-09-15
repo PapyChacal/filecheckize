@@ -1,1 +1,1 @@
-# WRITEME
+Simple CLI tool generating the FileCheck lines that expects the given input.
