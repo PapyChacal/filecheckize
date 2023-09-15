@@ -60,7 +60,6 @@ def main():
         line = line.rstrip()
 
         # Ignore whitespace-only lines
-        # xDSL doesn't print spacing blank lines between ops or regions
         if not line:
             if args.check_empty_lines:
                 print(f"// {prefix}-EMPTY:")
