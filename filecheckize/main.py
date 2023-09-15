@@ -20,17 +20,17 @@ def main():
     )
     parser.add_argument(
         "--mlir-anonymize",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         help="Anonymize MLIR SSA value names and basic block names.",
     )
     parser.add_argument(
         "--check-empty-lines",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         help="Check strictly for empty lines. Default behavior is to just skip them.",
     )
     parser.add_argument(
         "--strip-comments",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         help="Strip comments from input rather than checking for them.",
     )
     parser.add_argument(

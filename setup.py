@@ -1,9 +1,8 @@
 import re
-from collections.abc import Mapping
 from pathlib import Path
 from typing import cast
 
-from setuptools import Command, find_packages, setup
+from setuptools import find_packages, setup
 
 import versioneer
 
@@ -19,7 +18,7 @@ with open("requirements.txt") as f:
 with open("requirements-optional.txt") as f:
     optionals = f.read().splitlines()
 
-reqs: list[str] = []
+reqs = []
 for ir in required:
     if ir[0:3] == "git":
         name = ir.split("/")[-1]
@@ -36,7 +35,7 @@ for mreqs, mode in zip(
         "extras",
     ],
 ):
-    opt_reqs: list[str] = []
+    opt_reqs = []
     for ir in mreqs:
         # For conditionals like pytest=2.1; python == 3.6
         if ";" in ir:
@@ -60,7 +59,7 @@ for mreqs, mode in zip(
 setup(
     name="filecheckize",
     version=cast(str, versioneer.get_version()),
-    cmdclass=cast(Mapping[str, type[Command]], versioneer.get_cmdclass()),
+    cmdclass=versioneer.get_cmdclass(),
     description="FileCheck generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
