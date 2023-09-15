@@ -7,3 +7,4 @@ source =
     tests/
 omit =
     filecheckize/filecheckize
+    filecheckize/_version.py

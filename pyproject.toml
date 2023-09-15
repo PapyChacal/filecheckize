@@ -6,6 +6,7 @@ reportImportCycles = false
 enableTypeIgnoreComments = false
 typeCheckingMode = "strict"
 "include" = ["filecheckize"]
+"ignore" = ["filecheckize/_version.py"]
 
 [tool.isort]
 profile = "black"
