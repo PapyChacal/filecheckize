@@ -1,10 +1,10 @@
-black
-toml
+black<24.5
+toml<0.11
 coverage
-filecheck
-lit
-ruff
-isort
+filecheck<0.025
+lit<18.2
+ruff<0.5
+isort<5.14
 # pyright version has to be fixed with `==`. The CI parses this file
 # and installs the according version for typechecking.
-pyright
+pyright<1.1.368
