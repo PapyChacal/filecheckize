@@ -39,6 +39,6 @@ jobs:
 
     - name: Run code formatting checks
       run: |
-        ruff .
+        ruff check .
         black --check .
 
