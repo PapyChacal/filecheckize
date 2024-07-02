@@ -49,7 +49,7 @@ jobs:
       if: matrix.python-version == '3.11'
       uses: Wandalen/wretry.action@v1
       with:
-        action: codecov/codecov-action@v3
+        action: codecov/codecov-action@v4
         attempt_delay: 10000
         attempt_limit: 10
         with: |
