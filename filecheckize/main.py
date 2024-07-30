@@ -13,8 +13,8 @@ BASIC_BLOCK_NAME = re.compile(r"\^([\d]+|[\w$._-][\w\d$._-]*)")
 ANONYMOUS_VARIABLE = r"%{{.*}}"
 ANONYMOUS_BLOCK = r"^{{.*}}"
 
-SUBSTITUTED_VARS: set[str] = set()
-SUBSTITUTED_BLOCKS: set[str] = set()
+SUBSTITUTED_VARS: "set[str]" = set()
+SUBSTITUTED_BLOCKS: "set[str]" = set()
 
 
 def substitute_variable(var: str) -> str:
