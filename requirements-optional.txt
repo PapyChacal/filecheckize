@@ -1,7 +1,7 @@
 black<24.5
 toml<0.11
 coverage
-filecheck<0.025
+filecheck<=1.0
 lit<18.2
 ruff<0.5
 isort<5.14
