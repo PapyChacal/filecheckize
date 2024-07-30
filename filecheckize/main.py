@@ -14,6 +14,23 @@ BASIC_BLOCK_NAME = re.compile(r"\^([\d]+|[\w$._-][\w\d$._-]*)")
 ANONYMOUS_VARIABLE = r"%{{.*}}"
 ANONYMOUS_BLOCK = r"^{{.*}}"
 
+SUBSTITUTED_VARS = set[str]()
+SUBSTITUTED_BLOCKS = set[str]()
+
+
+def substitute_variable(var: str) -> str:
+    if var not in SUBSTITUTED_VARS:
+        SUBSTITUTED_VARS.add(var)
+        return f"[[%{var}:%.*]]"
+    return f"[[%{var}]]"
+
+
+def substitute_block(block: str) -> str:
+    if block not in SUBSTITUTED_BLOCKS:
+        SUBSTITUTED_BLOCKS.add(block)
+        return f"[[^{block}:^.*]]"
+    return f"[[^{block}]]"
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -81,23 +98,53 @@ def main():
 
     if args.mlir_anonymize:
 
-        def anonymize(line: str) -> str:
-            # Anonymize SSA value names
-            return re.sub(
-                BASIC_BLOCK_NAME,
-                ANONYMOUS_BLOCK,
-                re.sub(SSA_VALUE_NAME, ANONYMOUS_VARIABLE, line),
-            )
+        if args.substitute:
+
+            def anonymize(line: str) -> str:
+                # Anonymize SSA value names
+                return re.sub(
+                    BASIC_BLOCK_NAME,
+                    lambda m: substitute_block(m.group(1)),
+                    re.sub(
+                        SSA_VALUE_NAME, lambda m: substitute_variable(m.group(1)), line
+                    ),
+                )
+
+        else:
+
+            def anonymize(line: str) -> str:
+                # Anonymize SSA value names
+                return re.sub(
+                    BASIC_BLOCK_NAME,
+                    ANONYMOUS_BLOCK,
+                    re.sub(SSA_VALUE_NAME, ANONYMOUS_VARIABLE, line),
+                )
 
     elif args.xdsl_anonymize:
 
-        def anonymize(line: str) -> str:
-            # Anonymize unnamed SSA value names
-            return re.sub(
-                BASIC_BLOCK_NAME,
-                ANONYMOUS_BLOCK,
-                re.sub(UNNAMED_SSA_VALUE, ANONYMOUS_VARIABLE, line),
-            )
+        if args.substitute:
+
+            def anonymize(line: str) -> str:
+                # Anonymize SSA value names
+                return re.sub(
+                    BASIC_BLOCK_NAME,
+                    lambda m: substitute_block(m.group(1)),
+                    re.sub(
+                        UNNAMED_SSA_VALUE,
+                        lambda m: substitute_variable(m.group(1)),
+                        line,
+                    ),
+                )
+
+        else:
+
+            def anonymize(line: str) -> str:
+                # Anonymize SSA value names
+                return re.sub(
+                    BASIC_BLOCK_NAME,
+                    ANONYMOUS_BLOCK,
+                    re.sub(UNNAMED_SSA_VALUE, ANONYMOUS_VARIABLE, line),
+                )
 
     else:
 
