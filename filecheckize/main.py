@@ -7,6 +7,14 @@ from io import TextIOWrapper
 from typing import cast
 
 
+UNNAMED_SSA_VALUE = re.compile(r"%([\d]+)")
+SSA_VALUE_NAME = re.compile(r"%([\d]+|[\w$._-][\w\d$._-]*)(:|#[\d]*)?")
+BASIC_BLOCK_NAME = re.compile(r"\^([\d]+|[\w$._-][\w\d$._-]*)")
+
+ANONYMOUS_VARIABLE = r"%{{.*}}"
+ANONYMOUS_BLOCK = r"^{{.*}}"
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Generate the FileCheck lines that expects the given input."
@@ -55,9 +63,6 @@ def main():
     args = parser.parse_args(sys.argv[1:])
 
     comment_line = re.compile(rf"^\s*{re.escape(args.comments_prefix)}.*$")
-    unnamed_ssa_value = re.compile(r"%([\d]+)")
-    ssa_value_name = re.compile(r"%([\d]+|[\w$._-][\w\d$._-]*)(:|#[\d]*)?")
-    basic_block_name = re.compile(r"\^([\d]+|[\w$._-][\w\d$._-]*)")
 
     prefix = args.check_prefix
 
@@ -83,13 +88,13 @@ def main():
         if args.mlir_anonymize or args.xdsl_anonymize:
             if args.mlir_anonymize:
                 # Anonymize SSA value names
-                line = re.sub(ssa_value_name, r"%{{.*}}", line)
+                line = re.sub(SSA_VALUE_NAME, ANONYMOUS_VARIABLE, line)
             elif args.xdsl_anonymize:
                 # Anonymize unnamed SSA values
-                line = re.sub(unnamed_ssa_value, r"%{{.*}}", line)
+                line = re.sub(UNNAMED_SSA_VALUE, ANONYMOUS_VARIABLE, line)
 
             # Anonymize basic blocks names
-            line = re.sub(basic_block_name, r"^{{.*}}", line)
+            line = re.sub(BASIC_BLOCK_NAME, ANONYMOUS_BLOCK, line)
 
         # Print the modified line
         if next:
