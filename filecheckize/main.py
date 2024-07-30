@@ -88,7 +88,7 @@ def main():
     if args.strip_comments:
 
         def strip(line: str) -> bool:
-            return re.match(comment_line, line)
+            return bool(re.match(comment_line, line))
 
     else:
 
