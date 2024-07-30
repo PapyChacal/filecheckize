@@ -38,6 +38,11 @@ def main():
         help="Anonymize MLIR unnamed SSA values and basic block names.",
     )
     parser.add_argument(
+        "--substitute",
+        action="store_true",
+        help="Use variable substituion instead of anonymization.",
+    )
+    parser.add_argument(
         "--check-empty-lines",
         action="store_true",
         help="Check strictly for empty lines. Default behavior is to just skip them.",
@@ -64,6 +69,41 @@ def main():
 
     comment_line = re.compile(rf"^\s*{re.escape(args.comments_prefix)}.*$")
 
+    if args.strip_comments:
+
+        def strip(line: str) -> bool:
+            return re.match(comment_line, line)
+
+    else:
+
+        def strip(line: str) -> bool:
+            return False
+
+    if args.mlir_anonymize:
+
+        def anonymize(line: str) -> str:
+            # Anonymize SSA value names
+            return re.sub(
+                BASIC_BLOCK_NAME,
+                ANONYMOUS_BLOCK,
+                re.sub(SSA_VALUE_NAME, ANONYMOUS_VARIABLE, line),
+            )
+
+    elif args.xdsl_anonymize:
+
+        def anonymize(line: str) -> str:
+            # Anonymize unnamed SSA value names
+            return re.sub(
+                BASIC_BLOCK_NAME,
+                ANONYMOUS_BLOCK,
+                re.sub(UNNAMED_SSA_VALUE, ANONYMOUS_VARIABLE, line),
+            )
+
+    else:
+
+        def anonymize(line: str) -> str:
+            return line
+
     prefix = args.check_prefix
 
     next = False
@@ -81,20 +121,10 @@ def main():
             continue
 
         # Ignore remaining comment lines
-        if args.strip_comments:
-            if re.match(comment_line, line):
-                continue
+        if strip(line):
+            continue
 
-        if args.mlir_anonymize or args.xdsl_anonymize:
-            if args.mlir_anonymize:
-                # Anonymize SSA value names
-                line = re.sub(SSA_VALUE_NAME, ANONYMOUS_VARIABLE, line)
-            elif args.xdsl_anonymize:
-                # Anonymize unnamed SSA values
-                line = re.sub(UNNAMED_SSA_VALUE, ANONYMOUS_VARIABLE, line)
-
-            # Anonymize basic blocks names
-            line = re.sub(BASIC_BLOCK_NAME, ANONYMOUS_BLOCK, line)
+        line = anonymize(line)
 
         # Print the modified line
         if next:
