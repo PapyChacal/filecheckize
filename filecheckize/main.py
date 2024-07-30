@@ -167,6 +167,10 @@ def main():
                 next = False
             continue
 
+        elif "// -----" in line:
+            SUBSTITUTED_VARS.clear()
+            SUBSTITUTED_BLOCKS.clear()
+
         # Ignore remaining comment lines
         if strip(line):
             continue
