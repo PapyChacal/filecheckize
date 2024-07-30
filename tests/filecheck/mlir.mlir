@@ -13,55 +13,55 @@ func.func @arg_rec(%0 : !test.type<"int">) -> !test.type<"int"> {
     func.return %1 : !test.type<"int">
 }
 
-// STRIP:      // CHECK:      func.func @arg_rec(%0 : !test.type<"int">) -> !test.type<"int"> {
-// STRIP-NEXT: // CHECK-NEXT:     %1 = func.call @arg_rec(%0) : (!test.type<"int">) -> !test.type<"int">
-// STRIP-NEXT: // CHECK-NEXT:     %name = arith.constant : i32
-// STRIP-NEXT: // CHECK-NEXT:     %other_name = arith.constant : i32
-// STRIP-NEXT: // CHECK-NEXT:     %2 = arith.addi %name, %other_name : i32
-// STRIP-NEXT: // CHECK-NEXT:     func.return %1 : !test.type<"int">
-// STRIP-NEXT: // CHECK-NEXT: }
+// STRIP{LITERAL}:      // CHECK:      func.func @arg_rec(%0 : !test.type<"int">) -> !test.type<"int"> {
+// STRIP-NEXT{LITERAL}: // CHECK-NEXT:     %1 = func.call @arg_rec(%0) : (!test.type<"int">) -> !test.type<"int">
+// STRIP-NEXT{LITERAL}: // CHECK-NEXT:     %name = arith.constant : i32
+// STRIP-NEXT{LITERAL}: // CHECK-NEXT:     %other_name = arith.constant : i32
+// STRIP-NEXT{LITERAL}: // CHECK-NEXT:     %2 = arith.addi %name, %other_name : i32
+// STRIP-NEXT{LITERAL}: // CHECK-NEXT:     func.return %1 : !test.type<"int">
+// STRIP-NEXT{LITERAL}: // CHECK-NEXT: }
 
-// WITH-EMPTY:       // CHECK-EMPTY:
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:  func.func @arg_rec(%0 : !test.type<"int">) -> !test.type<"int"> {
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:      %1 = func.call @arg_rec(%0) : (!test.type<"int">) -> !test.type<"int">
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:      %name = arith.constant : i32
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:      %other_name = arith.constant : i32
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:      %2 = arith.addi %name, %other_name : i32
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:      func.return %1 : !test.type<"int">
-// WITH-EMPTY-NEXT:  // CHECK-NEXT:  }
-// WITH-EMPTY-NEXT:  // CHECK-EMPTY:
-// WITH-EMPTY-NEXT:  // CHECK-EMPTY:
-// WITH-EMPTY-NEXT:  // CHECK-EMPTY:
-// WITH-EMPTY-NEXT:  // CHECK-EMPTY:
+// WITH-EMPTY{LITERAL}:       // CHECK-EMPTY:
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:  func.func @arg_rec(%0 : !test.type<"int">) -> !test.type<"int"> {
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:      %1 = func.call @arg_rec(%0) : (!test.type<"int">) -> !test.type<"int">
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:      %name = arith.constant : i32
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:      %other_name = arith.constant : i32
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:      %2 = arith.addi %name, %other_name : i32
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:      func.return %1 : !test.type<"int">
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-NEXT:  }
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-EMPTY:
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-EMPTY:
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-EMPTY:
+// WITH-EMPTY-NEXT{LITERAL}:  // CHECK-EMPTY:
 
-// MLIR-ANONYMIZE:       // CHECK:       func.func @arg_rec(%{{.*}} : !test.type<"int">) -> !test.type<"int"> {
-// MLIR-ANONYMIZE-NEXT:  // CHECK-NEXT:      %{{.*}} = func.call @arg_rec(%{{.*}}) : (!test.type<"int">) -> !test.type<"int">
-// MLIR-ANONYMIZE-NEXT:  // CHECK-NEXT:      %{{.*}} = arith.constant : i32
-// MLIR-ANONYMIZE-NEXT:  // CHECK-NEXT:      %{{.*}} = arith.constant : i32
-// MLIR-ANONYMIZE-NEXT:  // CHECK-NEXT:      %{{.*}} = arith.addi %{{.*}}, %{{.*}} : i32
-// MLIR-ANONYMIZE-NEXT:  // CHECK-NEXT:      func.return %{{.*}} : !test.type<"int">
-// MLIR-ANONYMIZE-NEXT:  // CHECK-NEXT:  }
+// MLIR-ANONYMIZE{LITERAL}:       // CHECK:       func.func @arg_rec(%{{.*}} : !test.type<"int">) -> !test.type<"int"> {
+// MLIR-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %{{.*}} = func.call @arg_rec(%{{.*}}) : (!test.type<"int">) -> !test.type<"int">
+// MLIR-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %{{.*}} = arith.constant : i32
+// MLIR-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %{{.*}} = arith.constant : i32
+// MLIR-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %{{.*}} = arith.addi %{{.*}}, %{{.*}} : i32
+// MLIR-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      func.return %{{.*}} : !test.type<"int">
+// MLIR-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:  }
 
-// MLIR-SUBSTITUTE:       // CHECK:       func.func @arg_rec([[%0:%.*]] : !test.type<"int">) -> !test.type<"int"> {
-// MLIR-SUBSTITUTE-NEXT:  // CHECK-NEXT:      [[%1:%.*]] = func.call @arg_rec([[%0]]) : (!test.type<"int">) -> !test.type<"int">
-// MLIR-SUBSTITUTE-NEXT:  // CHECK-NEXT:      [[%name:%.*]] = arith.constant : i32
-// MLIR-SUBSTITUTE-NEXT:  // CHECK-NEXT:      [[%other_name:%.*]] = arith.constant : i32
-// MLIR-SUBSTITUTE-NEXT:  // CHECK-NEXT:      [[%2:%.*]] = arith.addi [[%name]], [[%other_name]] : i32
-// MLIR-SUBSTITUTE-NEXT:  // CHECK-NEXT:      func.return [[%1]] : !test.type<"int">
-// MLIR-SUBSTITUTE-NEXT:  // CHECK-NEXT:  }
+// MLIR-SUBSTITUTE{LITERAL}:       // CHECK:       func.func @arg_rec([[v0:%.*]] : !test.type<"int">) -> !test.type<"int"> {
+// MLIR-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      [[v1:%.*]] = func.call @arg_rec([[v0]]) : (!test.type<"int">) -> !test.type<"int">
+// MLIR-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      [[vname:%.*]] = arith.constant : i32
+// MLIR-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      [[vother_name:%.*]] = arith.constant : i32
+// MLIR-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      [[v2:%.*]] = arith.addi [[vname]], [[vother_name]] : i32
+// MLIR-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      func.return [[v1]] : !test.type<"int">
+// MLIR-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:  }
 
-// XDSL-ANONYMIZE:       // CHECK:       func.func @arg_rec(%{{.*}} : !test.type<"int">) -> !test.type<"int"> {
-// XDSL-ANONYMIZE-NEXT:  // CHECK-NEXT:      %{{.*}} = func.call @arg_rec(%{{.*}}) : (!test.type<"int">) -> !test.type<"int">
-// XDSL-ANONYMIZE-NEXT:  // CHECK-NEXT:      %name = arith.constant : i32
-// XDSL-ANONYMIZE-NEXT:  // CHECK-NEXT:      %other_name = arith.constant : i32
-// XDSL-ANONYMIZE-NEXT:  // CHECK-NEXT:      %{{.*}} = arith.addi %name, %other_name : i32
-// XDSL-ANONYMIZE-NEXT:  // CHECK-NEXT:      func.return %{{.*}} : !test.type<"int">
-// XDSL-ANONYMIZE-NEXT:  // CHECK-NEXT:  }
+// XDSL-ANONYMIZE{LITERAL}:       // CHECK:       func.func @arg_rec(%{{.*}} : !test.type<"int">) -> !test.type<"int"> {
+// XDSL-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %{{.*}} = func.call @arg_rec(%{{.*}}) : (!test.type<"int">) -> !test.type<"int">
+// XDSL-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %name = arith.constant : i32
+// XDSL-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %other_name = arith.constant : i32
+// XDSL-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      %{{.*}} = arith.addi %name, %other_name : i32
+// XDSL-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:      func.return %{{.*}} : !test.type<"int">
+// XDSL-ANONYMIZE-NEXT{LITERAL}:  // CHECK-NEXT:  }
 
-// XDSL-SUBSTITUTE:       // CHECK:       func.func @arg_rec([[%0:%.*]] : !test.type<"int">) -> !test.type<"int"> {
-// XDSL-SUBSTITUTE-NEXT:  // CHECK-NEXT:      [[%1:%.*]] = func.call @arg_rec([[%0]]) : (!test.type<"int">) -> !test.type<"int">
-// XDSL-SUBSTITUTE-NEXT:  // CHECK-NEXT:      %name = arith.constant : i32
-// XDSL-SUBSTITUTE-NEXT:  // CHECK-NEXT:      %other_name = arith.constant : i32
-// XDSL-SUBSTITUTE-NEXT:  // CHECK-NEXT:      [[%2:%.*]] = arith.addi %name, %other_name : i32
-// XDSL-SUBSTITUTE-NEXT:  // CHECK-NEXT:      func.return [[%1]] : !test.type<"int">
-// XDSL-SUBSTITUTE-NEXT:  // CHECK-NEXT:  }
+// XDSL-SUBSTITUTE{LITERAL}:       // CHECK:       func.func @arg_rec([[v0:%.*]] : !test.type<"int">) -> !test.type<"int"> {
+// XDSL-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      [[v1:%.*]] = func.call @arg_rec([[v0]]) : (!test.type<"int">) -> !test.type<"int">
+// XDSL-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      %name = arith.constant : i32
+// XDSL-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      %other_name = arith.constant : i32
+// XDSL-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      [[v2:%.*]] = arith.addi %name, %other_name : i32
+// XDSL-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:      func.return [[v1]] : !test.type<"int">
+// XDSL-SUBSTITUTE-NEXT{LITERAL}:  // CHECK-NEXT:  }

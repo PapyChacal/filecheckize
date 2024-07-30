@@ -20,15 +20,15 @@ SUBSTITUTED_BLOCKS: "set[str]" = set()
 def substitute_variable(var: str) -> str:
     if var not in SUBSTITUTED_VARS:
         SUBSTITUTED_VARS.add(var)
-        return f"[[%{var}:%.*]]"
-    return f"[[%{var}]]"
+        return f"[[v{var}:%.*]]"
+    return f"[[v{var}]]"
 
 
 def substitute_block(block: str) -> str:
     if block not in SUBSTITUTED_BLOCKS:
         SUBSTITUTED_BLOCKS.add(block)
-        return f"[[^{block}:^.*]]"
-    return f"[[^{block}]]"
+        return f"[[b{block}:^.*]]"
+    return f"[[b{block}]]"
 
 
 def main():
