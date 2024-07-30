@@ -6,7 +6,6 @@ import sys
 from io import TextIOWrapper
 from typing import cast
 
-
 UNNAMED_SSA_VALUE = re.compile(r"%([\d]+)")
 SSA_VALUE_NAME = re.compile(r"%([\d]+|[\w$._-][\w\d$._-]*)(:|#[\d]*)?")
 BASIC_BLOCK_NAME = re.compile(r"\^([\d]+|[\w$._-][\w\d$._-]*)")
