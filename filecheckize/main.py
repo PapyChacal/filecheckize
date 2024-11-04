@@ -41,14 +41,17 @@ def main():
     )
     parser.add_argument(
         "--strip-comments",
-        action="store_true",
-        help="Strip comments from input rather than checking for them.",
+        type=str,
+        nargs="?",
+        default="",
+        const="//",
+        help="Strip comments from input rather than checking for them. Can take a custom comment prefix, otherwise defaults to // as in MLIR",
     )
     parser.add_argument(
         "--comments-prefix",
         type=str,
         default="//",
-        help="Set the prefix of a comment line. Defaults to '//' as in MLIR.",
+        help="Set the comment prefix to generate. defaults to '//' as in MLIR.",
     )
     parser.add_argument(
         "--check-prefix",
@@ -59,12 +62,13 @@ def main():
 
     args = parser.parse_args(sys.argv[1:])
 
-    comment_line = re.compile(rf"^\s*{re.escape(args.comments_prefix)}.*$")
+    comment_line = re.compile(rf"^\s*{re.escape(args.strip_comments)}.*$")
     unnamed_ssa_value = re.compile(r"%([\d]+)")
     ssa_value_name = re.compile(r"%([\d]+|[\w$._-][\w\d$._-]*)(:|#[\d]*)?")
     basic_block_name = re.compile(r"\^([\d]+|[\w$._-][\w\d$._-]*)")
 
     prefix = args.check_prefix
+    comm = args.comments_prefix
 
     next = False
 
@@ -74,7 +78,7 @@ def main():
         # Ignore whitespace-only lines
         if not line:
             if args.check_empty_lines:
-                print(f"// {prefix}-EMPTY:")
+                print(f"{comm} {prefix}-EMPTY:")
                 next = True
             else:
                 # Print empty lines between streaks of CHECK-NEXT
@@ -101,8 +105,8 @@ def main():
 
         # Print the modified line
         if next:
-            print(f"// {prefix}-NEXT:  ", end="")
+            print(f"{comm} {prefix}-NEXT:  ", end="")
         else:
-            print(f"// {prefix}:       ", end="")
+            print(f"{comm} {prefix}:       ", end="")
             next = True
         print(line)
