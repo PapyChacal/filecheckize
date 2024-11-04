@@ -20,6 +20,11 @@ def main():
     )
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
+        "--compact-output",
+        action="store_true",
+        help="Do not print empty lines between streaks of CHECK-NEXT.",
+    )
+    group.add_argument(
         "--mlir-anonymize",
         action="store_true",
         help="Anonymize MLIR SSA value names and basic block names.",
@@ -76,6 +81,9 @@ def main():
                 print(f"{comm} {prefix}-EMPTY:")
                 next = True
             else:
+                # Print empty lines between streaks of CHECK-NEXT
+                if next and not args.compact_output:
+                    print("")
                 next = False
             continue
 
